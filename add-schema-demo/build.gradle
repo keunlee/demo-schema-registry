@@ -1,0 +1,42 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+        avroPluginVersion = '0.10.0'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:${avroPluginVersion}"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: "com.commercehub.gradle.plugin.avro"
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+group = 'com.discover'
+sourceCompatibility = 1.8
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+
+dependencies {
+    compile "org.apache.avro:avro:1.8.1"
+    compile('org.springframework.boot:spring-boot-starter')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+}
+
+bootRepackage.enabled = false

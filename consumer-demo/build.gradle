@@ -1,0 +1,52 @@
+buildscript {
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+        avroPluginVersion = '0.10.0'
+    }
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.commercehub.gradle.plugin:gradle-avro-plugin:${avroPluginVersion}"
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: "com.commercehub.gradle.plugin.avro"
+apply plugin: 'org.springframework.boot'
+
+version = '0.0.1-SNAPSHOT'
+group = 'com.discover'
+sourceCompatibility = 1.8
+
+configurations {
+    all*.exclude module: 'spring-boot-starter-logging'
+}
+
+dependencies {
+    compile project(':add-schema-demo')
+    compile "org.apache.avro:avro:1.8.1"
+    compile 'com.squareup.okhttp3:okhttp:3.7.0'
+    compile 'org.apache.kafka:kafka-clients:0.11.0.0'
+    compile 'io.confluent:kafka-avro-serializer:3.3.0'
+    compile('org.springframework.boot:spring-boot-starter')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+
+
+repositories {
+    jcenter()
+    mavenCentral()
+    maven {
+        url "http://packages.confluent.io/maven/"
+    }
+}
+
+avro {
+    createSetters = false
+    fieldVisibility = "PRIVATE"
+}
